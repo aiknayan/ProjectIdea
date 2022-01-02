@@ -1,0 +1,102 @@
+import java.util.*;
+
+class Graph{
+    private int V;
+    //adjacency list
+    private LinkedList<Integer> adj[];
+    //maintaining a queue
+    private Queue<Integer> queue;
+
+    Graph(int v){
+        V = v;
+        adj = new LinkedList[v];
+        for (int i=0; i<v; i++){
+            adj[i] = new LinkedList<>();
+        }
+        queue = new LinkedList<Integer>();
+    }
+
+    //function to append the edges of the graph in the adjacency list
+    void addEdge(int v,int w){
+        adj[v].add(w);
+    }
+
+    void BFS(int n){
+
+        //initialising a distance array to store the levels of all nodes
+        int[] distance = new int[13];
+        //making level of source node as 0
+        distance[n] = 0;
+
+        //declring a boolean array for storing whether the node is already visited or not
+        boolean nodes[] = new boolean[V];
+        int a = 0;
+
+        //marking source node as visited
+        nodes[n]=true;
+        //appending it to the queue
+        queue.add(n);
+
+        //now we continue to iterate
+        //till our queue becomes empty
+        while (queue.size() != 0){
+            //popping element
+            n = queue.poll();
+
+            //checking for the neighbours of the current element popped from the queue
+            for (int i = 0; i < adj[n].size(); i++){
+
+                //getting first neighbour
+                a = adj[n].get(i);
+
+                //if node is unvisited
+                //then updating distance
+                //marking visited
+                //and appending to the queue
+                if (!nodes[a]){
+                    distance[a] = distance[n] + 1;
+                    nodes[a] = true;
+                    queue.add(a);
+                }
+            }
+        }
+
+        //printing the results
+        for (int i = 1; i < 13; i++){
+            System.out.println("Node " + i + ": " + distance[i] + "\n");
+        }
+    }
+
+    public static void main(String args[]){
+        //creating graph with 13 nodes
+        //done from 1 indexing hence one extra node
+        Graph graph = new Graph(13);
+
+        //appending all the edges to the graph
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 1);
+        graph.addEdge(2, 5);
+        graph.addEdge(5, 2);
+        graph.addEdge(5, 9);
+        graph.addEdge(9, 5);
+        graph.addEdge(5, 10);
+        graph.addEdge(10, 5);
+        graph.addEdge(2, 6);
+        graph.addEdge(6, 2);
+        graph.addEdge(1, 3);
+        graph.addEdge(3, 1);
+        graph.addEdge(1, 4);
+        graph.addEdge(4, 1);
+        graph.addEdge(4, 8);
+        graph.addEdge(8, 4);
+        graph.addEdge(4, 7);
+        graph.addEdge(7, 4);
+        graph.addEdge(7, 11);
+        graph.addEdge(11, 7);
+        graph.addEdge(7, 12);
+        graph.addEdge(12, 7);
+        System.out.println("The levels of all the nodes are as follows:\n");
+
+        graph.BFS(1);
+    }
+}
